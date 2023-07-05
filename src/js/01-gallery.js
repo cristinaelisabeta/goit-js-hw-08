@@ -1,11 +1,30 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import { galleryImages } from './gallery-task/creat-gallery-images.js';
-gallery.innerHTML = galleryImages;
-var lightbox = new SimpleLightbox('.gallery a', {
-  capttion: true,
-  captionSelector: 'img',
-  captionType: 'attr',
+import { galleryItems } from './gallery-items';
+const div = document.querySelector('.gallery');
+const newGallery = createGallery(galleryItems);
+
+div.insertAdjacentHTML('beforeend', newGallery);
+
+function createGallery(galleryItems) {
+  return galleryItems
+    .map(({ preview, original, description }) => {
+      return `
+    <div class="gallery__item">
+    <a class="gallery__link" href="${original}">
+    <img
+      class="gallery__image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+    />
+    </a>
+    </div>`;
+    })
+    .join('');
+}
+
+const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
